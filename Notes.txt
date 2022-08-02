@@ -1,0 +1,75 @@
+git clone https://github.com/louwrentius/fio-plot.git
+cd fio-plot/
+pip3 install fio-plot
+
+bench-fio --target /dev/mapper/mpatha --type device --mode randread randwrite read write --output PowerstoreISCSI --iodepth 1 8 16 32 64 --numjobs 12 --destructive
+bench-fio --target /dev/mapper/mpatha --type device --mode randread randwrite read write --output PowerstoreISCSI_1 --iodepth 1 8 16 32 64 --numjobs 1 --destructive
+bench-fio --target /dev/nvme12n3 --type device --mode randread randwrite read write --output PowerstoreTCP --iodepth 1 8 16 32 64 --numjobs 12 --destructive
+bench-fio --target /dev/nvme12n3 --type device --mode randread randwrite read write --output PowerstoreTCP_1 --iodepth 1 8 16 32 64 --numjobs 1 --destructive
+
+fio-plot -i /root/fio-plot/PowerstoreTCP_1/nvme12n4/4k /root/fio-plot/PowerstoreTCP_1/nvme12n4/8k /root/fio-plot/PowerstoreTCP_1/nvme12n4/32k /root/fio-plot/PowerstoreTCP_1/nvme12n4/64k -C -T "Powerstore NVMe/TCP RQ Size Compare (randread)" -r randread --show-cpu --xlabel-parent 0 -d 32 -n 1 -o /root/fio-plot/PowerstoreTCP_1_RQ_Compare_rr.png 
+
+fio-plot -i /root/fio-plot/PowerstoreTCP_1/nvme12n4/4k /root/fio-plot/PowerstoreTCP_1/nvme12n4/8k /root/fio-plot/PowerstoreTCP_1/nvme12n4/32k /root/fio-plot/PowerstoreTCP_1/nvme12n4/64k -C -T "Powerstore NVMe/TCP RQ Size Compare (randwrite)" -r randwrite --show-cpu --xlabel-parent 0 -d 32 -n 1 -o /root/fio-plot/PowerstoreTCP_1_RQ_Compare_rr.png 
+
+fio-plot -i /root/fio-plot/PowerstoreTCP_1/nvme12n4/4k /root/fio-plot/PowerstoreTCP_1/nvme12n4/8k /root/fio-plot/PowerstoreTCP_1/nvme12n4/32k /root/fio-plot/PowerstoreTCP_1/nvme12n4/64k -C -T "Powerstore NVMe/TCP RQ Size Compare" -r randread --show-cpu --xlabel-parent 0 -d 32 -n 1 -o /root/fio-plot/PowerstoreTCP_1_RQ_Compare_rr.png 
+
+fio-plot -i /root/fio-plot/PowerstoreTCP_1/nvme12n4/4k /root/fio-plot/PowerstoreTCP_1/nvme12n4/8k /root/fio-plot/PowerstoreTCP_1/nvme12n4/32k /root/fio-plot/PowerstoreTCP_1/nvme12n4/64k -C -T "Powerstore NVMe/TCP RQ Size Compare" -r randread --show-cpu --xlabel-parent 0 -d 32 -n 1 -o /root/fio-plot/PowerstoreTCP_1_RQ_Compare_rr.png 
+
+
+
+
+fio-plot -i /root/fio-plot/PowerstoreTCP/nvme12n3/4k -T "Powerstore NVMe/TCP Random Reads" -r randread --bargraph2d-qd --show-cpu --xlabel-parent 0 -d 1 8 16 32 64 -n 12 -o /root/fio-plot/PowerstoreTCP_rr.png
+
+fio-plot -i /root/fio-plot/PowerstoreTCP/nvme12n3/4k -T "Powerstore NVMe/TCP Random Writes" -r randwrite --bargraph2d-qd --show-cpu --xlabel-parent 0 -d 1 8 16 32 64 -n 12 -o /root/fio-plot/PowerstoreTCP_nvme12n3_rw.png
+
+bench-fio --target /dev/nvme12n1 --type device --mode randread randwrite read write --output PowerstoreFC --iodepth 1 8 16 32 64 --numjobs 12 --destructive
+bench-fio --target /dev/nvme12n1 --type device --mode randread randwrite read write --output PowerstoreFC_1 --iodepth 1 8 16 32 64 --numjobs 1 --destructive
+
+fio-plot -i /root/fio-plot/PowerstoreFC/nvme12n1/4k -T "Powerstore NVMe/FC Random Reads" -r randread --bargraph2d-qd --show-cpu --xlabel-parent 0 -d 1 8 16 32 -n 12 -o /root/fio-plot/PowerstoreFC_nvme12n1_4k_rr.png
+
+fio-plot -i /root/fio-plot/PowerstoreFC/nvme12n1/4k -T "Powerstore NVMe/FC Random Writes" -r randwrite --bargraph2d-qd --show-cpu --xlabel-parent 0 -d 1 8 16 32 -n 12 -o /root/fio-plot/PowerstoreFC_nvme12n1_4k_rw.png
+
+bench-fio --target /dev/nvme8n1 /dev/nvme8n2  --type device --mode randread randwrite --output EseriesFC --iodepth 1 8 16 32 --numjobs 12 --destructive
+
+fio-plot -i /root/fio-plot/EseriesFC/nvme8n1/4k -T "E-series NVMe/FC Random Reads" -r randread --bargraph2d-qd --show-cpu --xlabel-parent 0 -d 1 8 16 32 -n 12 -o /root/fio-plot/EseriesFC_nvme8n1_4k_rr.png
+
+fio-plot -i /root/fio-plot/EseriesFC/nvme8n1/4k -T "E-series NVMe/FC Random Writes" -r randwrite --bargraph2d-qd --show-cpu --xlabel-parent 0 -d 1 8 16 32 -n 12 -o /root/fio-plot/EseriesFC_nvme8n1_4k_rw.png
+
+bench-fio --target /dev/nvme13n2 /dev/nvme13n1  --type device --mode randread randwrite --output LightosTCP --iodepth 1 8 16 32 --numjobs 12 --destructive
+
+fio-plot -i /root/fio-plot/LightosTCP/nvme13n1/4k -T "LightOS NVMe/TCP Random Reads" -r randread --bargraph2d-qd --show-cpu --xlabel-parent 0 -d 1 8 16 32 -n 12 -o /root/fio-plot/LightosTCP_nvme13n1_4k_rr.png
+
+fio-plot -i /root/fio-plot/LightosTCP/nvme13n1/4k -T "LightOS NVMe/TCP Random Writes" -r randwrite --bargraph2d-qd --show-cpu --xlabel-parent 0 -d 1 8 16 32 -n 12 -o /root/fio-plot/LightosTCP_nvme13n1_4k_rw.png
+
+[root@rhel-storage-68 fio-plot]# nvme list
+Node                   SN                   Model                  Namespace Usage       Format   FW Rev  
+---------------------  -------------------- ---------------------- --------- ----------- -------- --------
+/dev/nvme13n2          38ea497ffbc3d04b     Lightbits LightOS      2           6.44  GB    4 KiB  2.3     
+/dev/nvme13n1          38ea497ffbc3d04b     Lightbits LightOS      1           5.37  GB    4 KiB  2.3     
+/dev/nvme8n2           721839500236         NetApp E-Series        2          21.47  GB  512   B  08700002
+/dev/nvme8n1           721839500236         NetApp E-Series        1         274.88  GB  512   B  08700002
+/dev/nvme12n4          18S1BW2              dellemc-powerstoreTCP  23         27.68  GB  512   B  3.0.0.0 
+/dev/nvme12n3          18S1BW2              dellemc-powerstoreTCP  22         27.74  GB  512   B  3.0.0.0 
+/dev/nvme12n2          18S1BW2              dellemc-powerstoreFC   17         17.32  GB  512   B  3.0.0.0 
+/dev/nvme12n1          18S1BW2              dellemc-powerstoreFC   16         28.27  GB  512   B  3.0.0.0 
+
+
+bench-fio --target /dev/nvme12n4 --type device --mode randread randwrite read write --engine libaio --block-size 4k 8k 32k 64k --output PowerstoreTCP --iodepth 1 8 16 32 64 --numjobs 12 --destructive
+
+bench-fio --target /dev/nvme12n4 --type device --mode randread randwrite read write --engine libaio --block-size 4k 8k 32k 64k --output PowerstoreTCP_1 --iodepth 1 8 16 32 64 --numjobs 1 --destructive
+
+fio-plot -i /root/fio-plot/PowerstoreTCP_1/nvme12n4/4k -T "Powerstore NVMe/TCP Q Depth Compare" -r randread --bargraph2d-qd --show-cpu --xlabel-parent 0 -d 1 8 16 32 64 -n 1 -o /root/fio-plot/PowerstoreTCP_QueDepth_rr.png
+
+fio-plot -i /root/fio-plot/PowerstoreTCP_1/nvme12n4/4k /root/fio-plot/PowerstoreTCP_1/nvme12n4/8k /root/fio-plot/PowerstoreTCP_1/nvme12n4/32k /root/fio-plot/PowerstoreTCP_1/nvme12n4/64k -C -T "Powerstore NVMe/TCP RQ Size Compare " -r randread --show-cpu --xlabel-parent 0 -d 32 -n 1 -o /root/fio-plot/PowerstoreTCP_1_RQ32_rr.png 
+
+fio-plot -i /root/fio-plot/PowerstoreTCP_1/nvme12n4/4k /root/fio-plot/PowerstoreTCP_1/nvme12n4/8k /root/fio-plot/PowerstoreTCP_1/nvme12n4/32k /root/fio-plot/PowerstoreTCP_1/nvme12n4/64k -T "Powerstore NVMe/TCP Random Reads" -r randread --bargraph3d --show-cpu --xlabel-parent 0 -d 1 8 16 32 64 -n 1 -o /root/fio-plot/PowerstoreTCP_1_nvme12n4_rr.png
+
+fio-plot -i /root/fio-plot/PowerstoreTCP_1/nvme12n4/4k -T "Powerstore NVMe/TCP Random Writes" -r randwrite --bargraph2d-qd --show-cpu --xlabel-parent 0 -d 1 8 16 32 64 -n 1 -o /root/fio-plot/PowerstoreTCP_nvme12n4_1_rw.png
+
+bench-fio --target /dev/nvme12n2 /dev/nvme12n1 --type device --mode randread randwrite --output PowerstoreFC --iodepth 1 8 16 32 --numjobs 12 --destructive
+
+fio-plot -i /root/fio-plot/PowerstoreFC/nvme12n1/4k -T "Powerstore NVMe/FC Random Reads" -r randread --bargraph2d-qd --show-cpu --xlabel-parent 0 -d 1 8 16 32 -n 12 -o /root/fio-plot/PowerstoreFC_nvme12n1_4k_rr.png
+
+fio-plot -i /root/fio-plot/PowerstoreFC/nvme12n1/4k -T "Powerstore NVMe/FC Random Writes" -r randwrite --bargraph2d-qd --show-cpu --xlabel-parent 0 -d 1 8 16 32 -n 12 -o /root/fio-plot/PowerstoreFC_nvme12n1_4k_rw.png
+
+
